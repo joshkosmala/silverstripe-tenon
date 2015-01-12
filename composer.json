@@ -1,0 +1,19 @@
+{
+    "name": "silverstripe/tenon",
+    "description": "Check the accessibility of your SilverStripe site with this module that integrates with Tenon (www.tenon.io).",
+    "license": "MIT",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "tenon", "api", "accessibility"],
+    "authors": [{
+            "name": "Josh Kosmala",
+            "email": "josh@novaweb.co.nz"
+        },
+        {
+            "name": "Leigh Harrison",
+            "email": "leigh@elseapps.com"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": ">=3.1.0"
+    }
+}
