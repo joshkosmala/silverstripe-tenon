@@ -3,7 +3,7 @@
 class TenonAjax extends Controller {
 
     const
-        DO_SS_LOG = true;
+        DO_SS_LOG = false;
 
     protected
         $hash_object = null,
