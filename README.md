@@ -16,6 +16,7 @@ Whenever a page is loaded a hash of the DOM is generated. The page URL and the h
 If there's a match, nothing happens. Otherwise the page is analysed and the hash is added to the Tenon Hash table so it's not analysed again until it changes.
  
 Analysis involves sending the page URL to http://tenon.io/api/ and processing the results in four steps:
+
 1. If there's a response other than *200 Success* this is logged to the Tenon Error table in your Silverstripe database and processing ends.
 2. If the response **is** *200 Success*, any existing entries for the page URL are deleted from the Tenon Error table and steps 3 and 4 begin.
 3. Any reported Javascript errors are added: these can block Tenon's page analysis and effort should be made to resolve them.
