@@ -1,0 +1,7 @@
+---
+Name: tenon-routes
+After: 'framework/*','cms/*'
+---
+Director:
+  rules:
+    'tenon//$Action': 'TenonAjax'

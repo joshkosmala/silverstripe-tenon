@@ -1,0 +1,6 @@
+---
+Name: Tenon
+---
+SiteConfig:
+  extensions:
+    - TenonConfig
