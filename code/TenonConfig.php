@@ -15,33 +15,19 @@ class TenonConfig extends DataExtension {
         'TenonPriority' => 'Int'
     );
 
-    private static $defaults = array(
-        'TenonURL' => 'http://www.tenon.io/api/',
-        'TenonCertainty' => 60,
-        'TenonWCAGLevel' => 'AAA',
-        'TenonPriority' => 20
-    );
-    /*
-    function extraStatics($class = NULL, $extension = NULL) {
-        return array(
-            'defaults' => array(
-                'TenonURL' => 'http://www.tenon.io/api/',
-                'TenonCertainty' => 60,
-                'TenonWCAGLevel' => 'AAA',
-                'TenonPriority' => 20
-            )
+    public static function get_extra_config($class = null, $extensionClass = null, $args = null) {
+        $config = array();
+
+        $config['defaults'] = array(
+            'TenonURL' => 'http://www.tenon.io/api/',
+            'TenonCertainty' => 60,
+            'TenonWCAGLevel' => 'AAA',
+            'TenonPriority' => 20
         );
+
+        return $config;
     }
 
-    public function populateDefaults() {
-        $this->TenonURL = 'http://www.tenon.io/api/';
-        $this->TenonAPIKey = '';
-        $this->TenonCertainty = 60;
-        $this->TenonWCAGLevel = 'AAA';
-        $this->TenonPriority = 20;
-        parent::populateDefaults();
-    }
-    */
     public function updateCMSFields(FieldList $fields) {
         $fieldURL = new TextField("TenonURL", "Tenon API URL");
         $fieldURL->setDescription('The full URL to the Tenon URL');
