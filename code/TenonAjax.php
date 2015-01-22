@@ -3,7 +3,7 @@
 class TenonAjax extends Controller {
 
     const
-        DO_SS_LOG = true;
+        DO_SS_LOG = false;
 
     protected
         $hash_object = null,
@@ -141,12 +141,19 @@ class TenonAjax extends Controller {
 
     /**
      * Utility function to log events if DO_SS_LOG is set
+     * Ensure this is safe if DO_SS_LOG is incorrectly set to true
      * @param $where
      * @param $what
      */
     private function log($where = '', $what = ''){
-        if (self::DO_SS_LOG)
-            SS_Log::log("$where: $what", SS_Log::NOTICE);
+        if (self::DO_SS_LOG) {
+            try {
+                SS_Log::log("$where: $what", SS_Log::NOTICE);
+            }
+            catch(Exception $e){
+                // Do nothing, just prevent the exception from propagating
+            }
+        }
     }
 
     /**
