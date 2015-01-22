@@ -29,11 +29,11 @@ class TenonResult extends DataObject implements PermissionProvider {
     );
 
     private static $summary_fields = array(
-        'PageURL',
-        'ResultType',
-        'PageDensity',
-        'ErrorTitle',
-        'Description'
+        'PageURL' => 'Page URL',
+        'ResultType' => 'Result Type',
+        'PageDensity.Nice' => 'Page Density',
+        'ErrorTitle' => 'Error Title',
+        'Description' => 'Description'
     );
 
     private static $searchable_fields = array(
@@ -44,10 +44,8 @@ class TenonResult extends DataObject implements PermissionProvider {
     );
 
     public function getCMSFields() {
-        //SS_Log::log("TenonResult.getCMSFields", SS_Log::NOTICE);
         $fields = parent::getCMSFields();
         $fields->removeByName('Title');
-
 
         $fieldResultType = $fields->fieldByName('Root.Main.ResultType');
         $fieldResultType
@@ -57,7 +55,7 @@ class TenonResult extends DataObject implements PermissionProvider {
         $fieldResultType->setTitle('Result type');
 
         $fieldPageDensity = $fields->fieldByName('Root.Main.PageDensity');
-        $fieldPageDensity->setDescription('Errors (not warnings) as a percentage of the page content');
+        $fieldPageDensity->setDescription('<p>Errors (not warnings) as a percentage of the page content - multiply this value by 100</p>');
         $fieldPageDensity->setTitle('Page density %');
 
         $fieldErrorTitle = $fields->fieldByName("Root.Main.ErrorTitle");
