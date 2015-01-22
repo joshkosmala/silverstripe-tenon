@@ -3,7 +3,7 @@
 class TenonAjax extends Controller {
 
     const
-        DO_SS_LOG = false;
+        DO_SS_LOG = true;
 
     protected
         $hash_object = null,
@@ -78,10 +78,6 @@ class TenonAjax extends Controller {
             }
         }
 
-        // Rename the URL parameter
-        $out['url'] = $out['tURL'];
-        unset($out['tURL']);
-
         // Update these options with those set in TenonConfig
         $config = SiteConfig::current_site_config();
         $out['key'] = $config->TenonAPIKey;
@@ -89,6 +85,19 @@ class TenonAjax extends Controller {
         $out['level'] = $config->TenonWCAGLevel;
         $out['priority'] = $config->TenonPriority;
         $this->tenon_url = $config->TenonURL;
+
+        // If "Use Source" is checked, send the source rather than the URL
+        $this->log('TenonAjax.buildOptions', 'source='.$config->TenonSource, SS_Log::NOTICE);
+        if ($config->TenonSource === 'Source'){
+            $out['src'] = $request->postVar('src');
+            $out['fragment'] = 1;
+        }
+        else {
+            // Rename the URL parameter
+            $out['url'] = $out['tURL'];
+        }
+        // In either case, remove the existing 'tURL' parameter
+        unset($out['tURL']);
 
         // Return the options
         return $out;
@@ -231,11 +240,11 @@ class TenonAjax extends Controller {
                 $timestamp->setValue(date('Y-m-d H:i:s'));
                 $result->setField('PageURL', $this->tenon_page);
                 $result->setField('Timestamp', $timestamp);
-                $result->setField('PageDensity', $this->tenon_response->resultSummary->errorDensity / 100);
+                $result->setField('PageDensity', $this->tenon_response->resultSummary->density->errorDensity / 100);
                 $result->setField('ErrorTitle', $rsItem->errorTitle);
                 $result->setField('Title', $this->tenon_page . ' ' . $rsItem->errorTitle);
                 $result->setField('Description', $rsItem->errorDescription);
-                $result->setField('Snippet', $rsItem->errorSnippet);
+                $result->setField('Snippet', html_entity_decode($rsItem->errorSnippet));
                 $result->setField('Location', 'line: ' . $rsItem->position->line . ', column: ' . $rsItem->position->column);
                 $result->setField('ResultType', 'Error');
                 $result->write();
