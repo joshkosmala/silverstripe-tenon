@@ -16,4 +16,20 @@ class TenonAdmin extends ModelAdmin {
     private static $menu_title = 'Tenon Results';
     private static $url_segment = 'tenon';
 
+    public function getEditForm($id = null, $fields = null) {
+        $editForm = parent::getEditForm($id, $fields);
+
+        $roleGridField = $editForm->Fields()->fieldByName('TenonResult');
+
+        if ($roleGridField instanceof GridField) {
+            $this->addPaginatorWithShowAll($roleGridField);
+        }
+
+        return $editForm;
+    }
+
+    private function addPaginatorWithShowAll($gridField) {
+        $gridField->getConfig()->removeComponentsByType('GridFieldPaginator')->addComponent(new GridFieldPaginatorWithShowAll(30));
+    }
+
 }
