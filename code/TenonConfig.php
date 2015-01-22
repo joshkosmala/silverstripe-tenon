@@ -12,7 +12,8 @@ class TenonConfig extends DataExtension {
         'TenonAPIKey' => 'Varchar(32)',
         'TenonCertainty' => 'Int',
         'TenonWCAGLevel' => 'Varchar(32)',
-        'TenonPriority' => 'Int'
+        'TenonPriority' => 'Int',
+        'TenonSource' => 'Varchar(32)',
     );
 
     public static function get_extra_config($class = null, $extensionClass = null, $args = null) {
@@ -22,7 +23,8 @@ class TenonConfig extends DataExtension {
             'TenonURL' => 'http://www.tenon.io/api/',
             'TenonCertainty' => 60,
             'TenonWCAGLevel' => 'AAA',
-            'TenonPriority' => 20
+            'TenonPriority' => 20,
+            'TenonSource' => 'Source',
         );
 
         return $config;
@@ -78,5 +80,16 @@ class TenonConfig extends DataExtension {
         );
         $fieldPriority->setDescription('The priority cut-off for Tenon analysis');
         $fields->addFieldToTab("Root.Tenon", $fieldPriority);
+
+        $fieldSource = DropdownField::create(
+            'TenonSource',
+            'Tenon Source',
+            array(
+                'Source' => 'Send the page source to Tenon',
+                'URL' => 'Send Tenon the page URL'
+            ), 'Source'
+        );
+        $fieldSource->setDescription('Tenon can either be provided with HTML/CSS/JS to parse, or be given a link to visit');
+        $fields->addFieldToTab("Root.Tenon", $fieldSource);
     }
 }
