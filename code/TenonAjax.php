@@ -3,10 +3,12 @@
 class TenonAjax extends Controller {
 
     const
-        DO_SS_LOG = false;
+        DO_SS_LOG = false,      // Toggles SS_Log::log activity
+        DO_JSON_DEBUG = true;   // Toggles debug logging in JSON responses
 
     protected
         $hash_object = null,
+        $jsondebug = array(),
         $tenon_page = '',
         $tenon_hash = '',
         $tenon_response = array(),
@@ -91,10 +93,12 @@ class TenonAjax extends Controller {
         if ($config->TenonSource === 'Source'){
             $out['src'] = $request->postVar('src');
             $out['fragment'] = 1;
+            $this->jsondebug['buildOptions-Src'] = strlen($request->postVar('src'));
         }
         else {
             // Rename the URL parameter
             $out['url'] = $out['tURL'];
+            $this->jsondebug['buildOptions-Url'] = $out['url'];
         }
         // In either case, remove the existing 'tURL' parameter
         unset($out['tURL']);
@@ -122,7 +126,9 @@ class TenonAjax extends Controller {
             'Page' => $this->tenon_page
         ))->First();
         $this->log("TenonAjax.existingPageHash", "result=".print_r($this->hash_object, true));
-        return (isset($this->hash_object) && $this->hash_object->exists() && $this->hash_object->getField('Hash') === $this->tenon_hash);
+        $out = (isset($this->hash_object) && $this->hash_object->exists() && $this->hash_object->getField('Hash') === $this->tenon_hash);
+        $this->jsondebug['existingPageHash'] = $out;
+        return $out;
     }
 
     /**
@@ -135,6 +141,8 @@ class TenonAjax extends Controller {
         $this->response->addHeader('Content-Type', 'application/json');
         $data = array();
         $data['success'] = $value;
+        if (self::DO_JSON_DEBUG)
+            $data['debug'] = $this->jsondebug;
         $out = json_encode($data);
         return $out;
     }
@@ -163,6 +171,7 @@ class TenonAjax extends Controller {
      */
     private function requestSend($tenon_options){
         $this->log("TenonAjax.requestSend", "options=".print_r($tenon_options, true).", url=".$this->tenon_url);
+        $this->jsondebug['requestSend-Url'] = $this->tenon_url;
 
         // Initialise cURL
         $curlObj = curl_init();
@@ -179,6 +188,7 @@ class TenonAjax extends Controller {
 
         // Evaluate response
         $this->log("TenonAjax.requestSend", "code=".$code." data=".print_r($data, true));
+        $this->jsondebug['requestSend-HTTPStatus'] = $code;
         $out = ($code === 200);
         if ($out)
             $this->tenon_response = json_decode($data);
@@ -190,6 +200,8 @@ class TenonAjax extends Controller {
      * @return bool whether data has been saved or not
      */
     private function responseSave(){
+        $this->jsondebug['responseSave-TenonStatus'] = $this->tenon_response->status;
+        $this->jsondebug['responseSave-TenonMessage'] = $this->tenon_response->message;
         $saved = false;
         if ($this->responseSaveCount() > 0)
             $this->responseSaveDeleteExisting();
@@ -210,6 +222,7 @@ class TenonAjax extends Controller {
         $total += (isset($this->tenon_response->resultSet)) ? count($this->tenon_response->resultSet) : 0;
         $total += (isset($this->tenon_response->clientScriptErrors)) ? count($this->tenon_response->clientScriptErrors) : 0;
         $this->log("TenonAjax.responseSaveCount", "total=$total");
+        $this->jsondebug['responseSaveCount'] = $total;
         return $total;
     }
 
@@ -218,18 +231,11 @@ class TenonAjax extends Controller {
      * Deletes all existing matches for the current path in the TenonResult table
      */
     private function responseSaveDeleteExisting(){
-        /*
-        $query = new SQLQuery();
-        $query->setDelete(true);
-        $query->setFrom('TenonResult');
-        $query->setWhere('PageURL = ' . $this->tenon_page);
-        $query->execute();
-        $this->log("TenonAjax.responseSaveDeleteExisting", "query=".$query->sql());
-        */
         $datalist = TenonResult::get()->filter(array(
            'PageURL' => $this->tenon_page
         ));
         $this->log("TenonAjax.responseSaveDeleteExisting", "deleteCount=".$datalist->count());
+        $this->jsondebug['responseSaveDeleteExisting'] = $datalist->count();
         foreach ($datalist as $dataitem)
             $dataitem->delete();
     }
