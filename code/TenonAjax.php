@@ -3,12 +3,12 @@
 class TenonAjax extends Controller {
 
     const
-        DO_SS_LOG = false,      // Toggles SS_Log::log activity
-        DO_JSON_DEBUG = true;   // Toggles debug logging in JSON responses
+        DO_SS_LOG = false;  // Toggles SS_Log::log activity
 
     protected
         $hash_object = null,
         $jsondebug = array(),
+        $jsondebugresponse = 0,
         $tenon_page = '',
         $tenon_hash = '',
         $tenon_response = array(),
@@ -87,6 +87,7 @@ class TenonAjax extends Controller {
         $out['level'] = $config->TenonWCAGLevel;
         $out['priority'] = $config->TenonPriority;
         $this->tenon_url = $config->TenonURL;
+        $this->jsondebugresponse = $config->TenonJSONResponse;
 
         // If "Use Source" is checked, send the source rather than the URL
         $this->log('TenonAjax.buildOptions', 'source='.$config->TenonSource, SS_Log::NOTICE);
@@ -140,11 +141,14 @@ class TenonAjax extends Controller {
     private function jsonResponse($value){
         $this->response->addHeader('Content-Type', 'application/json');
         $data = array();
-        $data['success'] = $value;
-        if (self::DO_JSON_DEBUG)
-            $data['debug'] = $this->jsondebug;
-        $out = json_encode($data);
-        return $out;
+        switch ($this->jsondebugresponse){
+            case 1:
+                $data['success'] = $value;
+                break;
+            case 2:
+                $data['debug'] = $this->jsondebug;
+        }
+        return json_encode($data);
     }
 
     /**
