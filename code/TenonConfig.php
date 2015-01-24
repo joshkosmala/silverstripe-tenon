@@ -14,6 +14,7 @@ class TenonConfig extends DataExtension {
         'TenonWCAGLevel' => 'Varchar(32)',
         'TenonPriority' => 'Int',
         'TenonSource' => 'Varchar(32)',
+        'TenonJSONResponse' => 'Int',
     );
 
     public static function get_extra_config($class = null, $extensionClass = null, $args = null) {
@@ -25,6 +26,7 @@ class TenonConfig extends DataExtension {
             'TenonWCAGLevel' => 'AAA',
             'TenonPriority' => 20,
             'TenonSource' => 'Source',
+            'TenonJSONResponse' => 0,
         );
 
         return $config;
@@ -91,5 +93,17 @@ class TenonConfig extends DataExtension {
         );
         $fieldSource->setDescription('Tenon can either be provided with HTML/CSS/JS to parse, or be given a link to visit');
         $fields->addFieldToTab("Root.Tenon", $fieldSource);
+
+        $fieldResponse = DropdownField::create(
+            'TenonJSONResponse',
+            'Tenon JSON Response',
+            array(
+                0 => 'Empty array',
+                1 => 'Success value indicating whether or not new Tenon responses were saved',
+                2 => 'Debug log'
+            ), 1
+        );
+        $fieldResponse->setDescription('The debug log is useful for diagnosis but should normally be turned off');
+        $fields->addFieldToTab("Root.Tenon", $fieldResponse);
     }
 }
