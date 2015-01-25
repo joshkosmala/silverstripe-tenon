@@ -179,16 +179,14 @@ class TenonAjax extends Controller {
 
         // Initialise cURL
         $curlObj = curl_init();
+        curl_setopt($curlObj,CURLOPT_HTTPHEADER, array(
+            'Expect: application/json'
+        ));
         curl_setopt($curlObj, CURLOPT_URL, $this->tenon_url);
         curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curlObj, CURLOPT_POST, true);
         curl_setopt($curlObj, CURLOPT_FAILONERROR, true);
         curl_setopt($curlObj, CURLOPT_POSTFIELDS, $tenon_options);
-        curl_setopt($curlObj,CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($tenon_options),
-            'Expect:'
-        ));
 
         // Execute post, get results, close connection
         $data = curl_exec($curlObj);
