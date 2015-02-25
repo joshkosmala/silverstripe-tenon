@@ -31,19 +31,27 @@ class TenonAjax extends Controller {
         // Set the tenon options
         $tenon_options = $this->buildOptions($request);
 
-        // Store the page and create a hash of its contents
-        $this->tenon_page = $request->postVar('tURL');
-        $this->tenon_hash = $this->createHash($request);
-        $this->log("TenonAjax.requestTenon", "url=".$this->tenon_url.", options=".print_r($tenon_options, true));
+        // Origin check
+        if (strpos($request->postVar('tURL'), Director::absoluteURL(Director::baseURL())) === 0) {
+            // Only proceed if the key is set
+            if (strlen(trim($tenon_options["key"])) > 28 && ctype_xdigit(trim($tenon_options["key"]))) {
+                // Store the page and create a hash of its contents
+                $this->tenon_page = $request->postVar('tURL');
+                $this->tenon_hash = $this->createHash($request);
+                $this->log("TenonAjax.requestTenon", "url=" . $this->tenon_url . ", options=" . print_r($tenon_options, true));
 
-        // If the page/hash combination has not already been checked, do it now
-        if (!$this->existingPageHash()) {
-            if ($this->requestSend($tenon_options) && $this->responseSave() && $this->savePageHash()) {
-                $out = $this->jsonResponse(true);
-                $this->log("TenonAjax.analyse", "out=$out");
-                return $out;
+                // If the page/hash combination has not already been checked, do it now
+                if (!$this->existingPageHash()) {
+                    if ($this->requestSend($tenon_options) && $this->responseSave() && $this->savePageHash()) {
+                        $out = $this->jsonResponse(true);
+                        $this->log("TenonAjax.analyse", "out=$out");
+                        return $out;
+                    }
+                }
             }
         }
+        else
+            $this->log('Invalid request received by '.Director::absoluteURL(Director::baseURL()).' from '.$request->postVar('tURL'));
         return $this->jsonResponse(false);
     }
 
