@@ -4,4 +4,4 @@ After: 'framework/*','cms/*'
 ---
 Director:
   rules:
-    'tenon//$Action': 'TenonAjax'
+    'tenon//analyse': 'TenonAjax'
