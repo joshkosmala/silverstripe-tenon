@@ -2,6 +2,7 @@
  * Original code from https://bitbucket.org/tenon-io/tenon-js-embed-code released under MIT license
  * Modified (lines 7, 15, 69, 72) for Silverstripe by govtnz@dia.govt.nz
  */
+/*
 (function ($) {
 
     $(document).ready(function (options) {
@@ -73,4 +74,4 @@
     });
 
 }(jQuery));
-
+*/
