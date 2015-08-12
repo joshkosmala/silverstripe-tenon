@@ -4,3 +4,7 @@ Name: Tenon
 SiteConfig:
   extensions:
     - TenonConfig
+
+SiteTree:
+  extensions:
+    - TenonPageExtension

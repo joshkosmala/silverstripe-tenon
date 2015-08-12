@@ -30,7 +30,7 @@ class TenonProcessor extends Controller {
     public function analyse(SS_HTTPRequest $request) {
         // Set the tenon options
         $tenon_options = $this->buildOptions($request);
-
+        die();
         // Origin check
         if (strpos($request->postVar('tURL'), Director::absoluteURL(Director::baseURL())) === 0) {
             // Only proceed if the key is set

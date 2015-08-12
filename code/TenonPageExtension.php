@@ -1,14 +1,23 @@
 <?php
 
-class TenonPageExtension extends SiteTreeExtension {
+class TenonPageExtension extends DataExtension {
 
-    public function onAfterPublish(&$original) {
-        $link = $this->owner->Link();
+    public function onBeforeWrite() {
+//die("Yeow");
+      //Debug::message("Extension");die();
+   //   console.log("hello");
+      $link = $this->owner->Link();
+$source = Director::test($link, null, null, 'GET');
+//console.log($source);
+//Debug::show($source);die();
+$processor = new TenonProcessor();
+$processor->analyse($source);
+   /*     $link = $this->owner->Link();
         //Debug::message($link);die();
         $source = Director::test($link, null, null, 'GET');
         Debug::message($source);die();
         $processor = new TenonProcessor();
-        $processor->analyse();
+        $processor->analyse(); */
     }
 
 }
