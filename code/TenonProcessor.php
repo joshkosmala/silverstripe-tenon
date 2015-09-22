@@ -32,11 +32,11 @@ class TenonProcessor extends Controller {
         $tenon_options = $this->buildOptions($request);
         die();
         // Origin check
-        if (strpos($request->postVar('tURL'), Director::absoluteURL(Director::baseURL())) === 0) {
+        if (strpos($request->postVar('URL'), Director::absoluteURL(Director::baseURL())) === 0) {
             // Only proceed if the key is set
             if (strlen(trim($tenon_options["key"])) > 28 && ctype_xdigit(trim($tenon_options["key"]))) {
                 // Store the page and create a hash of its contents
-                $this->tenon_page = $request->postVar('tURL');
+                $this->tenon_page = $request->postVar('URL');
                 $this->tenon_hash = $this->createHash($request);
                 $this->log("TenonProcessor.requestTenon", "url=" . $this->tenon_url . ", options=" . print_r($tenon_options, true));
 
@@ -51,7 +51,7 @@ class TenonProcessor extends Controller {
             }
         }
         else
-            $this->log('Invalid request received by '.Director::absoluteURL(Director::baseURL()).' from '.$request->postVar('tURL'));
+            $this->log('Invalid request received by '.Director::absoluteURL(Director::baseURL()).' from '.$request->postVar('URL'));
         return $this->jsonResponse(false);
     }
 
@@ -65,7 +65,7 @@ class TenonProcessor extends Controller {
 
         // Create an array with the values populated by the Javascript
         $params = array(
-            'tURL',
+            'URL',
             'level',
             'certainty',
             'priority',
@@ -106,7 +106,7 @@ class TenonProcessor extends Controller {
         }
         else {
             // Rename the URL parameter
-            $out['url'] = $out['tURL'];
+            $out['url'] = $out['URL'];
             $this->jsondebug['buildOptions-Url'] = $out['url'];
         }
         // In either case, remove the existing 'tURL' parameter
