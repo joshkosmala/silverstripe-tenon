@@ -6,10 +6,17 @@ class TenonPageExtension extends DataExtension {
 //die("Yeow");
       //Debug::message("Extension");die();
    //   console.log("hello");
-      $link = $this->owner->Link();
-$source = Director::test($link, null, null, 'GET');
+//   Debug::message("DIE");
+//      die();
+//$link = $this->owner->Link();
+//Debug::message($link);
+//$httpMethod = "GET";
+//$source = Director::test($link, null, null, 'GET');
+//Debug::message($source);die();
 //console.log($source);
 //Debug::show($source);die();
+$source = "<img src='jpeg.jpg' />";
+
 $processor = new TenonProcessor();
 $processor->analyse($source);
    /*     $link = $this->owner->Link();
