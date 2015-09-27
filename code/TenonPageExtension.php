@@ -8,6 +8,13 @@ class TenonPageExtension extends DataExtension {
          ));
 
    }
+
+   function onAfterWrite() {
+      parent::onAfterWrite();
+      Debug::message("On After Write TenonProcessor");die();
+   }
+
+   
 /*    public function onBeforeWrite() {
       parent::onBeforeWrite();
 //die("Yeow");
