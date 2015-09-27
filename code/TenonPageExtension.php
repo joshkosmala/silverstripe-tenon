@@ -2,7 +2,13 @@
 
 class TenonPageExtension extends DataExtension {
 
-    public function onBeforeWrite() {
+   public function updateCMSFields(FieldList $fields) {
+         $fields->addFieldsToTab("Root.Accessibility", array(
+            new LiteralField("tenontest","<h2>Tenon response for this page to go here</h2>")
+         ));
+
+   }
+/*    public function onBeforeWrite() {
       parent::onBeforeWrite();
 //die("Yeow");
       //Debug::message("Extension");die();
@@ -20,12 +26,12 @@ Debug::message($source);die();
 
 $processor = new TenonProcessor();
 $processor->analyse($source);
-   /*     $link = $this->owner->Link();
+        $link = $this->owner->Link();
         //Debug::message($link);die();
         $source = Director::test($link, null, null, 'GET');
         Debug::message($source);die();
         $processor = new TenonProcessor();
-        $processor->analyse(); */
-    }
+        $processor->analyse();
+    } */
 
 }
