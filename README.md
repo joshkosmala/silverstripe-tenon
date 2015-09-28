@@ -3,6 +3,9 @@ Check the accessibility of your SilverStripe site with this module that integrat
 
 Read the Tenon Quick Start Guide for full details (http://www.tenon.io/documentation/quick-start.php).
 
+##Requirements
+composer require normann/gridfieldpaginatorwithshowall (works with af6b9ee2effcda4d351cacd3b6f1796026355240)
+
 ##Installation
 1. Install this module in the /tenon subdirectory of your web site.
 2. Include /tenon/javascript/tenon_post.js on every public page.
@@ -22,9 +25,9 @@ The following settings are available in *Settings->Tenon*:
 + **Tenon JSON Response** For debugging your initial Tenon setup, you can send a summary log back to the web page and inspect it in the console.
 
 ##How it works
-Whenever a page is loaded a hash of the DOM is generated. The page URL and the hash are queried in the Tenon Hash table in your Silverstripe database. 
+Whenever a page is loaded a hash of the DOM is generated. The page URL and the hash are queried in the Tenon Hash table in your Silverstripe database.
 If there's a match, nothing happens. Otherwise the page is analysed and the hash is added to the Tenon Hash table so it's not analysed again until it changes.
- 
+
 Analysis involves sending either the page URL or the page HTML (configurable in *Settings->Tenon*) to http://tenon.io/api/ and processing the results in four steps:
 
 1. Any HTTP response other than 200 is ignored.
@@ -36,7 +39,5 @@ Analysis involves sending either the page URL or the page HTML (configurable in 
 To view the results, open the *Tenon Results* tab in your Silverstripe Admin area.
 
 ##Authors
-This module was written for Govt.nz, a *Common Web Platform* project of the New Zealand Government. 
+This module was written for Govt.nz, a *Common Web Platform* project of the New Zealand Government.
 It's made available to the wider Silverstripe community in the interests of web accessibility.
-
-
