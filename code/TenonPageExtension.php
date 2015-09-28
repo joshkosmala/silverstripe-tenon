@@ -11,10 +11,18 @@ class TenonPageExtension extends DataExtension {
 
    function onAfterWrite() {
       parent::onAfterWrite();
-      Debug::message("On After Write TenonProcessor");die();
+      // Get the link to the current page
+      $link = $this->owner->Link();
+      Debug::message($this);die();
+      //Debug::message($link);die();
+      // Get the source using Director::test()
+      $source = Director::test($link, null, null, "POST");
+      //Debug::show($source);die();
+      TenonProcessor::analyse($source);
+      //Debug::message("On After Write TenonProcessor");die();
    }
 
-   
+
 /*    public function onBeforeWrite() {
       parent::onBeforeWrite();
 //die("Yeow");
