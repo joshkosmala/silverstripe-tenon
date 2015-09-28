@@ -14,10 +14,12 @@ class TenonPageExtension extends DataExtension {
 
 
 
-      // Get the link to the current page
+      // Get the entire link to the current page
       $link = $this->owner->AbsoluteLink();
+      TenonProcessor::analyse($link);
+
    //   Debug::message($this);die();
-      Debug::message($link);die();
+      //Debug::message($link);die();
       // Get the source using Director::test()
       //$source = Director::test($link, null, null, "POST");
       //Debug::show($source);die();

@@ -16,7 +16,10 @@ class TenonProcessor extends Controller {
 
    }
 
-   private function analyse() {
+   private function analyse($link) {
+
+      $tenon = TenonConfig::get()->first();
+      Debug::show($tenon);die();
       // Initialise cURL
      $curlObj = curl_init();
      curl_setopt($curlObj, CURLOPT_URL, $this->tenon_url);
