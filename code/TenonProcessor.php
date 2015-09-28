@@ -17,16 +17,16 @@ class TenonProcessor extends Controller {
    }
 
 
-
-
-
-   public static function analyse($link) {
+      public static function analyse($link) {
 
       $tenon = SiteConfig::current_site_config();
-      Debug::show($tenon);die();
+      //Debug::show($tenon);die();
+      $tenon_options['key'] = $tenon->TenonAPIKey;
+      $tenon_options['url'] = $link;
+
       // Initialise cURL
      $curlObj = curl_init();
-     curl_setopt($curlObj, CURLOPT_URL, $this->tenon_url);
+     curl_setopt($curlObj, CURLOPT_URL, $tenon->TenonURL);
      curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
      curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
      curl_setopt($curlObj, CURLOPT_POST, true);
@@ -37,6 +37,8 @@ class TenonProcessor extends Controller {
      $data = curl_exec($curlObj);
      $code = curl_getinfo($curlObj, CURLINFO_HTTP_CODE);
      curl_close($curlObj);
+
+     Debug::show($data);die();
      // Evaluate response
     /* $out = ($code === 200);
      if ($out){
