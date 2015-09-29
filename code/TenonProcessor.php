@@ -45,7 +45,7 @@ class TenonProcessor extends Controller {
         // Turn JSON response in to php array
 
        //Debug::show($data);die();
-       //$result = json_decode($data, true);
+       $results = json_decode($data, true);
 
        //Debug::show($result);
        //die();
@@ -54,7 +54,7 @@ class TenonProcessor extends Controller {
 
        // this should be inside the foreach
 
-       foreach($data->resultSet as $result){
+       foreach($results->resultSet as $result){
           Debug::message($result['errorTitle']);die();
           $tenonResult = new TenonResult();
           $tenonResult->Title = $result['errorTitle'];
