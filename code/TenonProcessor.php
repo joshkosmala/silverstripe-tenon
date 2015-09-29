@@ -65,6 +65,7 @@ class TenonProcessor extends Controller {
 
      } else {
         Debug::message("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?");
+        die();
      }
    }
 
