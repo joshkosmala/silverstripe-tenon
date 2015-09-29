@@ -50,7 +50,7 @@ class TenonProcessor extends Controller {
        foreach($arrayList as $arr){
             print_r($arr);die();
        } */
-       foreach($result[0] as $child){
+       foreach($result as $child){
            echo $child . "\n";
        }
        die();
