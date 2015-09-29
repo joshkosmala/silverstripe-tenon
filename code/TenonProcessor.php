@@ -40,7 +40,7 @@ class TenonProcessor extends Controller {
      //Debug::message($code);die();
 
      $result = json_decode($data, true);
-     Debug::message($result);die();
+     print_r($result);die();
      // Evaluate response
     /* $out = ($code === 200);
      if ($out){
