@@ -50,9 +50,7 @@ class TenonProcessor extends Controller {
        foreach($arrayList as $arr){
             print_r($arr);die();
        } */
-       foreach($result as $child){
-           echo $child . "\n";
-       }
+       Debug::message(print_r($result));
        die();
 
        $timestamp = new SS_DateTime();
