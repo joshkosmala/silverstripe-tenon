@@ -2,6 +2,10 @@
 
 class TenonPageExtension extends DataExtension {
 
+   static $has_many = array (
+   'TenonResults' => 'TenonResult'
+   )
+
    public function updateCMSFields(FieldList $fields) {
          $fields->addFieldsToTab("Root.Accessibility", array(
             new LiteralField("tenontest","<h2>Tenon response for this page to go here</h2>")

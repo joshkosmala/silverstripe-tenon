@@ -18,6 +18,10 @@ class TenonResult extends DataObject implements PermissionProvider {
         'Location' => 'Varchar(255)',
     );
 
+    private static $has_one = array(
+      'Page' => 'Page'
+   );
+
     private static $singular_name = 'Tenon Result';
 
     private static $indexes = array(
