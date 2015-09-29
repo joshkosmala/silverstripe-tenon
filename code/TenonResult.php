@@ -11,7 +11,6 @@ class TenonResult extends DataObject implements PermissionProvider {
         'Title' => 'Varchar(255)',
         'PageURL' => 'Varchar(255)',
         'ResultType' => "Enum('Error, Warning, Script, Failure')",
-        'Timestamp' => 'SS_Datetime',
         'PageDensity' => 'Percentage',
         'ErrorTitle' => 'Varchar(255)',
         'Description' => 'Text',

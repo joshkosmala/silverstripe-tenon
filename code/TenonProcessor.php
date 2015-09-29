@@ -46,10 +46,19 @@ class TenonProcessor extends Controller {
        $result = json_decode($data, true);
 
        // Do stuff here
-       $arrayList = ArrayList::create($result);
+      /* $arrayList = ArrayList::create($result);
        foreach($arrayList as $arr){
             print_r($arr);die();
+       } */
+       foreach($result[0] as $child){
+           echo $child . "\n";
        }
+       die();
+
+       $timestamp = new SS_DateTime();
+       $timestamp->setValue(date('Y-m-d H:i:s'));
+       $tenonResult = new TenonResult();
+       $tenonResult->write();
 
 
 
