@@ -45,17 +45,15 @@ class TenonProcessor extends Controller {
         // Turn JSON response in to php array
        $result = json_decode($data, true);
 
-       // Do stuff here
-      /* $arrayList = ArrayList::create($result);
-       foreach($arrayList as $arr){
-            print_r($arr);die();
-       } */
+
        Debug::show($result);
        die();
 
-       $timestamp = new SS_DateTime();
-       $timestamp->setValue(date('Y-m-d H:i:s'));
+       // add foreach here, iterate through the array creating new tenon results for each row in the array
+
+       // this should be inside the foreach
        $tenonResult = new TenonResult();
+       // set the fields
        $tenonResult->write();
 
 
