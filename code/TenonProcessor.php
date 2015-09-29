@@ -35,9 +35,9 @@ class TenonProcessor extends Controller {
      //curl_setopt($curlObj,CURLOPT_HTTPHEADER, array('Expect: '));
      // Execute post, get results, close connection
      $data = curl_exec($curlObj);
-     //$code = curl_getinfo($curlObj, CURLINFO_HTTP_CODE);
+     $code = curl_getinfo($curlObj, CURLINFO_HTTP_CODE);
      curl_close($curlObj);
-
+     Debug::message($code);die();
      print_r($data);die();
      $result = json_decode($data, true);
 
