@@ -2,7 +2,7 @@
 
 class TenonPageExtension extends DataExtension {
 
-   static $has_many = array (
+   private static $has_many = array (
    'TenonResults' => 'TenonResult'
    )
 
