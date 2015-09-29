@@ -37,8 +37,8 @@ class TenonProcessor extends Controller {
      $data = curl_exec($curlObj);
      $code = curl_getinfo($curlObj, CURLINFO_HTTP_CODE);
      curl_close($curlObj);
-     Debug::message($code);die();
-     print_r($data);die();
+     //Debug::message($code);die();
+     Debud::message($data);die();
      $result = json_decode($data, true);
 
      // Evaluate response
