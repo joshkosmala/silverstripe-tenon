@@ -43,6 +43,8 @@ class TenonProcessor extends Controller {
      // Evaluate response
      if($code === 200){
         // Turn JSON response in to php array
+
+       Debug::show($data);die();
        $result = json_decode($data, true);
 
        Debug::show($result);
