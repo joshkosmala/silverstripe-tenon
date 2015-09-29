@@ -53,6 +53,7 @@ class TenonProcessor extends Controller {
        // add foreach here, iterate through the array creating new tenon results for each row in the array
 
        // this should be inside the foreach
+       Debug::show($data->resultSet);die();
        foreach($data->resultSet as $result){
           $tenonResult = new TenonResult();
           $tenonResult->Title = $result['errorTitle'];
