@@ -45,7 +45,6 @@ class TenonProcessor extends Controller {
         // Turn JSON response in to php array
        $result = json_decode($data, true);
 
-
        Debug::show($result);
        die();
 
