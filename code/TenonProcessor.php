@@ -43,9 +43,9 @@ class TenonProcessor extends Controller {
      if($code === 200){
         // Turn JSON response in to php array
        $result = json_decode($data, true);
-       $tenonList = ArrayList::create($result);
-       foreach($tenonList as $response) {
-          Debug::message($response);die();
+
+       foreach($result as $response) {
+          print_r($reponse);die();
        }
        return $tenonList;
      } else {
