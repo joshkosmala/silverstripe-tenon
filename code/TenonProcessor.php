@@ -48,7 +48,7 @@ class TenonProcessor extends Controller {
        // Do stuff here
        $arrayList = ArrayList::create($result);
        foreach($arrayList as $arr){
-            Debug::show($arr);die();
+            print_r($arr);die();
        }
 
 
