@@ -37,19 +37,18 @@ class TenonProcessor extends Controller {
      $data = curl_exec($curlObj);
      $code = curl_getinfo($curlObj, CURLINFO_HTTP_CODE);
      curl_close($curlObj);
-     //Debug::message($code);die();
 
-     $result = json_decode($data, true);
-     print_r($result);die();
+
      // Evaluate response
-    /* $out = ($code === 200);
-     if ($out){
-        $this->tenon_response = json_decode($data);
-        return $out;
-     } else */
-
-
-
+     if($code === 200){
+        // Turn JSON response in to php array
+       $result = json_decode($data, true);
+       $tenonList = ArrayList::create($result);
+       Debug::show($tenonList);die();
+       return $tenonList;
+     } else {
+        Debug::message("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?");
+     }
    }
 
 
