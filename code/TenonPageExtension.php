@@ -2,9 +2,9 @@
 
 class TenonPageExtension extends DataExtension {
 
-   private static $has_many = array (
+   private static $has_many = array(
    'TenonResults' => 'TenonResult'
-   )
+);
 
    public function updateCMSFields(FieldList $fields) {
          $fields->addFieldsToTab("Root.Accessibility", array(
