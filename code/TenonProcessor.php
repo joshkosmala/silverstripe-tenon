@@ -44,7 +44,9 @@ class TenonProcessor extends Controller {
         // Turn JSON response in to php array
        $result = json_decode($data, true);
        $tenonList = ArrayList::create($result);
-       Debug::show($tenonList);die();
+       foreach($tenonList as $response) {
+          Debug::message($response);die();
+       }
        return $tenonList;
      } else {
         Debug::message("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?");
