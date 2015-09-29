@@ -56,14 +56,10 @@ class TenonProcessor extends Controller {
        foreach($data->resultSet as $result){
           $tenonResult = new TenonResult();
           $tenonResult->Title = $result['errorTitle'];
-          $tenonResult->Snippet = $result['errorSnippet']; 
+          $tenonResult->Snippet = $result['errorSnippet'];
           // set the fields
           $tenonResult->write();
        }
-
-
-
-
 
      } else {
         Debug::message("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?");
