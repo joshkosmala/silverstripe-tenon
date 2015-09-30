@@ -54,7 +54,7 @@ class TenonProcessor extends Controller {
 
        // this should be inside the foreach
 
-       foreach($results->resultSet as $result){
+       foreach($results['resultSet'] as $result){
           Debug::message($result['errorTitle']);die();
           $tenonResult = new TenonResult();
           $tenonResult->Title = $result['errorTitle'];
