@@ -93,7 +93,8 @@ class TenonProcessor extends Controller {
 				$tenonResult->write();
 			}
 		} else {
-			TenonResult::createError("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?", $page);
+			$curlResponse = curl_getinfo($curlObj);
+			TenonResult::createError("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?<br><br>System info:<br>" . print_r($curlResponse, true), $page);
 			die();
 		}
 
