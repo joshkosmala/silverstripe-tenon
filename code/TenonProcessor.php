@@ -92,12 +92,15 @@ class TenonProcessor extends Controller {
                 $tenonResult->ResultType = 'Error';
 				$tenonResult->write();
 			}
-
-			echo "ok";
 		} else {
 			TenonResult::createError("Tenon analyse didn't work. Are you behind a firewall? You need to be on a server connected to the internet. Perhaps your API key has expired or you forgot to fill it out?", $page);
 			die();
 		}
+
+		// either success or fail cases return this. If there was an error, it would have been logged. Other cases that
+		// don't return "ok" are if there was a problem connecting to TenonProcessor in the first place, so this needs
+		// to remain here.
+		echo "ok";
 	}
 
 	// Determine if a string is a URL. Return true if it is, false if it's not.
