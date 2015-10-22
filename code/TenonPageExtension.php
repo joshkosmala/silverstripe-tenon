@@ -2,6 +2,10 @@
 
 class TenonPageExtension extends DataExtension {
 
+	private static $db = array(
+		'TenonCheckOnSave' => 'Boolean'
+	);
+
 	private static $has_many = array(
 		'TenonResults' => 'TenonResult'
 	);
@@ -20,6 +24,9 @@ class TenonPageExtension extends DataExtension {
 
 	// Add an "Accessibility" tab to each page, which shows the grid of results.
 	public function updateCMSFields(FieldList $fields) {
+
+		Requirements::javascript('tenon/javascript/tenon_cms.js');
+
 		$config = GridFieldConfig_RelationEditor::create();
 
 		$resultsGrid = new GridField(
@@ -32,6 +39,8 @@ class TenonPageExtension extends DataExtension {
 		$fields->addFieldsToTab("Root.Accessibility", array(
 			$resultsGrid
 		));
+
+		$fields->addFieldToTab("Root.Accessibility", new CheckboxField("TenonCheckOnSave", "Run Tenon checks automatically on save", $this->owner->TenonCheckOnSave));
 	}
 
 	// A flag to ensure tenon is not invoked more than once per request,
@@ -43,25 +52,47 @@ class TenonPageExtension extends DataExtension {
 	function onAfterWrite() {
 		parent::onAfterWrite();
 
-		// not strictly necessary, this is a guard against a single request
-		// doing a write twice within the same request. Simply because the
-		// call to tenon is expensive.
-		if (self::$_tenon_invoked) {
-			return;
-		}
-		self::$_tenon_invoked = true;
+		// // not strictly necessary, this is a guard against a single request
+		// // doing a write twice within the same request. Simply because the
+		// // call to tenon is expensive.
+		// if (self::$_tenon_invoked) {
+		// 	return;
+		// }
+		// self::$_tenon_invoked = true;
 
-		// If we're going to send this to tenon, we'll register this function
-		// to execute on shutdown. This will initiate the process to
-		// send to tenon.
-		self::$tenonCheckPage = $this->owner;
+		// // If we're going to send this to tenon, we'll register this function
+		// // to execute on shutdown. This will initiate the process to
+		// // send to tenon.
+		// self::$tenonCheckPage = $this->owner;
 
-		// Trigger invoking tenon.
-		if (self::$async) {
-			register_shutdown_function(array(__CLASS__, "invoke_tenon"));
-		} else {
-			self::invoke_tenon();
-		}
+		// // Trigger invoking tenon.
+		// if (self::$async) {
+		// 	register_shutdown_function(array(__CLASS__, "invoke_tenon"));
+		// } else {
+		// 	self::invoke_tenon();
+		// }
+		// Post save Tenon check is only run if the TenonCheckOnSave is true
+		if ($this->owner->TenonCheckOnSave) {
+			// not strictly necessary, this is a guard against a single request
+			// doing a write twice within the same request. Simply because the
+			// call to tenon is expensive.
+			if (self::$_tenon_invoked) {
+				return;
+			}
+			self::$_tenon_invoked = true;
+
+			// If we're going to send this to tenon, we'll register this function
+			// to execute on shutdown. This will initiate the process to
+			// send to tenon.
+			self::$tenonCheckPage = $this->owner;
+
+			// Trigger invoking tenon.
+			if (self::$async) {
+				register_shutdown_function(array(__CLASS__, "invoke_tenon"));
+			} else {
+				self::invoke_tenon();
+			}
+ 		}
 	}
 
 	// Invoke a request to tenon. This is done by creating a sub-process that
