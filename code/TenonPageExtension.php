@@ -20,7 +20,7 @@ class TenonPageExtension extends DataExtension {
 	 * @config
 	 * @var array
 	 */
-	private static $async = true;
+	private static $async = false;
 
 	// Add an "Accessibility" tab to each page, which shows the grid of results.
 	public function updateCMSFields(FieldList $fields) {
