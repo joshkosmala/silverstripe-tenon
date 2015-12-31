@@ -5,7 +5,8 @@
  * @package silverstripe-tenon
  * @author josh@novaweb.co.nz
  */
-class TenonConfig extends DataExtension {
+class TenonConfig extends DataExtension
+{
 
     private static $db = array(
         'TenonURL' => 'Varchar(255)',
@@ -17,7 +18,8 @@ class TenonConfig extends DataExtension {
         'TenonJSONResponse' => 'Int',
     );
 
-    public static function get_extra_config($class = null, $extensionClass = null, $args = null) {
+    public static function get_extra_config($class = null, $extensionClass = null, $args = null)
+    {
         $config = array();
 
         $config['defaults'] = array(
@@ -32,7 +34,8 @@ class TenonConfig extends DataExtension {
         return $config;
     }
 
-    public function updateCMSFields(FieldList $fields) {
+    public function updateCMSFields(FieldList $fields)
+    {
         $fieldURL = new TextField("TenonURL", "Tenon API URL");
         $fieldURL->setDescription('The full URL to the Tenon URL');
         $fields->addFieldToTab("Root.Tenon", $fieldURL);

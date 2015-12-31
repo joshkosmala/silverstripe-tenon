@@ -1,6 +1,7 @@
 <?php
 
-class TenonHash extends DataObject{
+class TenonHash extends DataObject
+{
 
     private static $db = array(
         'Page' => 'Varchar(255)',
@@ -10,5 +11,4 @@ class TenonHash extends DataObject{
     private static $indexes = array(
         'Page' => true
     );
-
 }

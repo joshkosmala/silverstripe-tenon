@@ -5,7 +5,8 @@
  * @package silverstripe-tenon
  * @author josh@novaweb.co.nz
  */
-class TenonResult extends DataObject implements PermissionProvider {
+class TenonResult extends DataObject implements PermissionProvider
+{
 
     private static $db = array(
         'Title' => 'Varchar(255)',
@@ -43,7 +44,8 @@ class TenonResult extends DataObject implements PermissionProvider {
         'Description'
     );
 
-    public function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
         $fields->removeByName('Title');
 
@@ -64,24 +66,28 @@ class TenonResult extends DataObject implements PermissionProvider {
         return $fields;
     }
 
-    public function providePermissions() {
+    public function providePermissions()
+    {
         return array();
     }
 
-    public function canCreate($member = null) {
+    public function canCreate($member = null)
+    {
         return false;
     }
 
-    public function canDelete($member = null) {
+    public function canDelete($member = null)
+    {
         return false;
     }
 
-    public function canEdit($member = null) {
+    public function canEdit($member = null)
+    {
         return false;
     }
 
-    public function canView($member = null) {
+    public function canView($member = null)
+    {
         return true;
     }
-
 }
