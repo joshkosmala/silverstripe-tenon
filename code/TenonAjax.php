@@ -1,12 +1,12 @@
 <?php
 
-class TenonAjax extends Controller {
+class TenonAjax extends Controller
+{
 
     const
         DO_SS_LOG = false;  // Toggles SS_Log::log activity
 
-    protected
-        $hash_object = null,
+    protected $hash_object = null,
         $jsondebug = array(),
         $jsondebugresponse = 0,
         $tenon_page = '',
@@ -18,7 +18,8 @@ class TenonAjax extends Controller {
         'analyse' => true
     );
 
-    public function init() {
+    public function init()
+    {
         parent::init();
     }
 
@@ -27,7 +28,8 @@ class TenonAjax extends Controller {
      * @param SS_HTTPRequest $request sent by browser
      * @return string json response to send to back to the browser
      */
-    public function analyse(SS_HTTPRequest $request) {
+    public function analyse(SS_HTTPRequest $request)
+    {
         // Set the tenon options
         $tenon_options = $this->buildOptions($request);
 
@@ -49,9 +51,9 @@ class TenonAjax extends Controller {
                     }
                 }
             }
-        }
-        else
+        } else {
             $this->log('Invalid request received by '.Director::absoluteURL(Director::baseURL()).' from '.$request->postVar('tURL'));
+        }
         return $this->jsonResponse(false);
     }
 
@@ -60,7 +62,8 @@ class TenonAjax extends Controller {
      * @param $request POST data from the web page
      * @return array Tenon API -ready parameters
      */
-    private function buildOptions($request){
+    private function buildOptions($request)
+    {
         $out = array();
 
         // Create an array with the values populated by the Javascript
@@ -81,10 +84,11 @@ class TenonAjax extends Controller {
             'fragment',
             'store'
         );
-        foreach ($request->postVars() AS $key => $value) {
+        foreach ($request->postVars() as $key => $value) {
             if (in_array($key, $params)) {
-                if (strlen(trim($value)) > 0)
+                if (strlen(trim($value)) > 0) {
                     $out[$key] = $value;
+                }
             }
         }
 
@@ -99,12 +103,11 @@ class TenonAjax extends Controller {
 
         // If "Use Source" is checked, send the source rather than the URL
         $this->log('TenonAjax.buildOptions', 'source='.$config->TenonSource, SS_Log::NOTICE);
-        if ($config->TenonSource === 'Source'){
+        if ($config->TenonSource === 'Source') {
             $out['src'] = $request->postVar('src');
             $out['fragment'] = 1;
             $this->jsondebug['buildOptions-Src'] = strlen($request->postVar('src'));
-        }
-        else {
+        } else {
             // Rename the URL parameter
             $out['url'] = $out['tURL'];
             $this->jsondebug['buildOptions-Url'] = $out['url'];
@@ -121,7 +124,8 @@ class TenonAjax extends Controller {
      * @param $request is page HTML
      * @return string is hash
      */
-    private function createHash($request){
+    private function createHash($request)
+    {
         return md5(serialize($request->postVar('src')));
     }
 
@@ -130,7 +134,8 @@ class TenonAjax extends Controller {
      * Checks whether there's an existing page in the PageHash table with the same hash
      * @return bool true if a matching entry exists
      */
-    private function existingPageHash(){
+    private function existingPageHash()
+    {
         $this->hash_object = TenonHash::get()->filter(array(
             'Page' => $this->tenon_page
         ))->First();
@@ -146,10 +151,11 @@ class TenonAjax extends Controller {
      * Note that the browser does nothing with these values at this time, but we want to change that in the future
      * @return string json encoded success value
      */
-    private function jsonResponse($value){
+    private function jsonResponse($value)
+    {
         $this->response->addHeader('Content-Type', 'application/json');
         $data = array();
-        switch ($this->jsondebugresponse){
+        switch ($this->jsondebugresponse) {
             case 1:
                 $data['success'] = $value;
                 break;
@@ -165,12 +171,12 @@ class TenonAjax extends Controller {
      * @param $where
      * @param $what
      */
-    private function log($where = '', $what = ''){
+    private function log($where = '', $what = '')
+    {
         if (self::DO_SS_LOG) {
             try {
                 SS_Log::log("$where: $what", SS_Log::NOTICE);
-            }
-            catch(Exception $e){
+            } catch (Exception $e) {
                 // Do nothing, just prevent the exception from propagating
             }
         }
@@ -181,7 +187,8 @@ class TenonAjax extends Controller {
      * @param $tenon_options sent to Tenon API as is
      * @return bool if the HTTP response = 200
      */
-    private function requestSend($tenon_options){
+    private function requestSend($tenon_options)
+    {
         $this->log("TenonAjax.requestSend", "options=".print_r($tenon_options, true).", url=".$this->tenon_url);
         $this->jsondebug['requestSend-Url'] = $this->tenon_url;
 
@@ -194,7 +201,7 @@ class TenonAjax extends Controller {
         curl_setopt($curlObj, CURLOPT_POST, true);
         curl_setopt($curlObj, CURLOPT_FAILONERROR, true);
         curl_setopt($curlObj, CURLOPT_POSTFIELDS, $tenon_options);
-        curl_setopt($curlObj,CURLOPT_HTTPHEADER, array('Expect: '));
+        curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Expect: '));
 
         // Execute post, get results, close connection
         $data = curl_exec($curlObj);
@@ -205,8 +212,9 @@ class TenonAjax extends Controller {
         $this->log("TenonAjax.requestSend", "code=".$code." data=".print_r($data, true));
         $this->jsondebug['requestSend-HTTPStatus'] = $code;
         $out = ($code === 200);
-        if ($out)
+        if ($out) {
             $this->tenon_response = json_decode($data);
+        }
         return $out;
     }
 
@@ -214,12 +222,14 @@ class TenonAjax extends Controller {
      * Called by analyse function
      * @return bool whether data has been saved or not
      */
-    private function responseSave(){
+    private function responseSave()
+    {
         $this->jsondebug['responseSave-TenonStatus'] = $this->tenon_response->status;
         $this->jsondebug['responseSave-TenonMessage'] = $this->tenon_response->message;
         $saved = false;
-        if ($this->responseSaveCount() > 0)
+        if ($this->responseSaveCount() > 0) {
             $this->responseSaveDeleteExisting();
+        }
         // Process each of the response types in turn
         if ($this->responseSaveFailure($saved)) {
             $this->responseSaveScript($saved);
@@ -232,7 +242,8 @@ class TenonAjax extends Controller {
      * Called by responseSave function
      * @return int number of entries to be saved to the TenonResult table
      */
-    private function responseSaveCount(){
+    private function responseSaveCount()
+    {
         $total = ((int)$this->tenon_response->status === 200) ? 0 : 1;
         $total += (isset($this->tenon_response->resultSet)) ? count($this->tenon_response->resultSet) : 0;
         $total += (isset($this->tenon_response->clientScriptErrors)) ? count($this->tenon_response->clientScriptErrors) : 0;
@@ -245,14 +256,16 @@ class TenonAjax extends Controller {
      * Called by responseSave function
      * Deletes all existing matches for the current path in the TenonResult table
      */
-    private function responseSaveDeleteExisting(){
+    private function responseSaveDeleteExisting()
+    {
         $datalist = TenonResult::get()->filter(array(
            'PageURL' => $this->tenon_page
         ));
         $this->log("TenonAjax.responseSaveDeleteExisting", "deleteCount=".$datalist->count());
         $this->jsondebug['responseSaveDeleteExisting'] = $datalist->count();
-        foreach ($datalist as $dataitem)
+        foreach ($datalist as $dataitem) {
             $dataitem->delete();
+        }
     }
 
     /**
@@ -260,9 +273,10 @@ class TenonAjax extends Controller {
      * Saves any Errors and Warnings to the database
      * @param $saved set to true if data is saved
      */
-    private function responseSaveErrorWarning(&$saved){
-        if (count($this->tenon_response->resultSet) > 0){
-            foreach($this->tenon_response->resultSet as $rsItem){
+    private function responseSaveErrorWarning(&$saved)
+    {
+        if (count($this->tenon_response->resultSet) > 0) {
+            foreach ($this->tenon_response->resultSet as $rsItem) {
                 $result = new TenonResult();
                 $timestamp = new SS_DateTime();
                 $timestamp->setValue(date('Y-m-d H:i:s'));
@@ -288,10 +302,11 @@ class TenonAjax extends Controller {
      * @param $saved set to true if data is saved
      * @return bool true if there is no Tenon internal error
      */
-    private function responseSaveFailure(&$saved){
+    private function responseSaveFailure(&$saved)
+    {
         $out = ((int)$this->tenon_response->status === 200);
         $this->log("TenonAjax.responseSaveFailure", "status=".$this->tenon_response->status.", out=$out");
-        if (!$out){
+        if (!$out) {
             $result = new TenonResult();
             $timestamp = new SS_DateTime();
             $timestamp->setValue(date('Y-m-d H:i:s'));
@@ -315,18 +330,20 @@ class TenonAjax extends Controller {
      * Saves any client script errors to the database
      * @param $saved set to true if data is saved
      */
-    private function responseSaveScript(&$saved){
+    private function responseSaveScript(&$saved)
+    {
         $this->log("TenonAjax.responseSaveScript", "count=".count($this->tenon_response->clientScriptErrors));
-        if (count($this->tenon_response->clientScriptErrors) > 0){
-            foreach($this->tenon_response->clientScriptErrors as $csError){
+        if (count($this->tenon_response->clientScriptErrors) > 0) {
+            foreach ($this->tenon_response->clientScriptErrors as $csError) {
                 $result = new TenonResult();
                 $timestamp = new SS_DateTime();
                 $timestamp->setValue(date('Y-m-d H:i:s'));
                 $result->setField('PageURL', $this->tenon_page);
                 $result->setField('ResultType', 'Script');
                 $result->setField('Timestamp', $timestamp);
-                if (isset($this->tenon_response->resultSummary->errorDensity))
+                if (isset($this->tenon_response->resultSummary->errorDensity)) {
                     $result->setField('PageDensity', $this->tenon_response->resultSummary->errorDensity / 100);
+                }
                 $result->setField('Title', $this->tenon_page . 'script error');
                 $result->setField('ErrorTitle', 'Script error');
                 $result->setField('Description', $csError->message);
@@ -351,12 +368,13 @@ class TenonAjax extends Controller {
      * @param $item "file", "function" or "line"
      * @return string
      */
-    private function responseSaveScriptCollate($stacktraces, $item){
+    private function responseSaveScriptCollate($stacktraces, $item)
+    {
         $mult = count($stacktraces) > 1;
         $pos = 1;
         $out = "$item" . (($mult) ? "s: " : ": ");
-        foreach($stacktraces as $trace){
-            switch($item){
+        foreach ($stacktraces as $trace) {
+            switch ($item) {
                 case "file":
                     $atom = $trace->file;
                     break;
@@ -383,15 +401,16 @@ class TenonAjax extends Controller {
      * Called by analyse function
      * @return bool if PageHash is saved successfully
      */
-    private function savePageHash(){
+    private function savePageHash()
+    {
         $this->log("TenonAjax.savePageHash", "page=".$this->tenon_page.", hash=".$this->tenon_hash.", hashobjectset=".isset($this->hash_object));
         if (isset($this->hash_object)) {
-            if (!$this->hash_object->exists())
+            if (!$this->hash_object->exists()) {
                 $this->hash_object->setField('Page', $this->tenon_page);
+            }
             $this->hash_object->setField('Hash', $this->tenon_hash);
             $this->hash_object->write();
-        }
-        else{
+        } else {
             $hash = new TenonHash();
             $hash->setField("Page", $this->tenon_page);
             $hash->setField("Hash", $this->tenon_hash);
@@ -399,5 +418,4 @@ class TenonAjax extends Controller {
         }
         return true;
     }
-
 }

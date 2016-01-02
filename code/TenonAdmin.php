@@ -5,7 +5,8 @@
  * @package silverstripe-tenon
  * @author josh@novaweb.co.nz
  */
-class TenonAdmin extends ModelAdmin {
+class TenonAdmin extends ModelAdmin
+{
 
     private static $managed_models = array(
         'TenonResult',
@@ -16,7 +17,8 @@ class TenonAdmin extends ModelAdmin {
     private static $menu_title = 'Tenon Results';
     private static $url_segment = 'tenon';
 
-    public function getEditForm($id = null, $fields = null) {
+    public function getEditForm($id = null, $fields = null)
+    {
         $editForm = parent::getEditForm($id, $fields);
 
         $roleGridField = $editForm->Fields()->fieldByName('TenonResult');
@@ -28,8 +30,8 @@ class TenonAdmin extends ModelAdmin {
         return $editForm;
     }
 
-    private function addPaginatorWithShowAll($gridField) {
+    private function addPaginatorWithShowAll($gridField)
+    {
         $gridField->getConfig()->removeComponentsByType('GridFieldPaginator')->addComponent(new GridFieldPaginatorWithShowAll(30));
     }
-
 }
