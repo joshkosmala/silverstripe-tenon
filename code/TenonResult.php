@@ -19,7 +19,7 @@ class TenonResult extends DataObject implements PermissionProvider {
     );
 
     private static $has_one = array(
-      'Page' => 'Page'
+      'Page' => 'SiteTree'
    );
 
     private static $singular_name = 'Tenon Result';
@@ -27,7 +27,6 @@ class TenonResult extends DataObject implements PermissionProvider {
     private static $indexes = array(
         'PageURL' => true,
         'ResultType' => true,
-        'Timestamp' => true,
         'PageDensity' => true
     );
 
