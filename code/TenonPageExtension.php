@@ -52,25 +52,6 @@ class TenonPageExtension extends DataExtension {
 	function onAfterWrite() {
 		parent::onAfterWrite();
 
-		// // not strictly necessary, this is a guard against a single request
-		// // doing a write twice within the same request. Simply because the
-		// // call to tenon is expensive.
-		// if (self::$_tenon_invoked) {
-		// 	return;
-		// }
-		// self::$_tenon_invoked = true;
-
-		// // If we're going to send this to tenon, we'll register this function
-		// // to execute on shutdown. This will initiate the process to
-		// // send to tenon.
-		// self::$tenonCheckPage = $this->owner;
-
-		// // Trigger invoking tenon.
-		// if (self::$async) {
-		// 	register_shutdown_function(array(__CLASS__, "invoke_tenon"));
-		// } else {
-		// 	self::invoke_tenon();
-		// }
 		// Post save Tenon check is only run if the TenonCheckOnSave is true
 		if ($this->owner->TenonCheckOnSave) {
 			// not strictly necessary, this is a guard against a single request

@@ -19,8 +19,8 @@ class TenonResult extends DataObject implements PermissionProvider {
     );
 
     private static $has_one = array(
-      'Page' => 'SiteTree'
-   );
+        'Page' => 'SiteTree'
+    );
 
     private static $singular_name = 'Tenon Result';
 
