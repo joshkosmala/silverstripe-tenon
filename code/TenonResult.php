@@ -19,15 +19,14 @@ class TenonResult extends DataObject implements PermissionProvider {
     );
 
     private static $has_one = array(
-      'Page' => 'Page'
-   );
+        'Page' => 'SiteTree'
+    );
 
     private static $singular_name = 'Tenon Result';
 
     private static $indexes = array(
         'PageURL' => true,
         'ResultType' => true,
-        'Timestamp' => true,
         'PageDensity' => true
     );
 
@@ -87,4 +86,18 @@ class TenonResult extends DataObject implements PermissionProvider {
         return true;
     }
 
+    // This is a helper function to create a TenonResult object against a page so that
+    // system errors can be reported. This is particularly to handle failures to invoke
+    // the API or other related issues, rather than accessibility issues from the tenon
+    // API itself.
+    public static function createError($description, $page) {
+        $result = new TenonResult();
+        $result->ResultType = 'Failure';
+        $result->ErrorTitle = "ERROR INVOKING TENON";
+        $result->Description = $description;
+        if ($page) {
+            $result->PageID = $page->ID;
+        }
+        $result->write();
+    }
 }

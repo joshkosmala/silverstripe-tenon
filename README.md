@@ -30,6 +30,29 @@ The following settings are available in *Settings->Tenon*:
 
 ##How it works
 
+TenonPageExtension is automatically added to SiteTree, and triggers a checking process after a page write in draft (on CMS save). This process generates a copy of the saved page in draft mode, and sends this content to Tenon API to perform it's checks.
+
+TenonResult objects are created in the database from Tenon's response, with an association to the page. In this way, Tenon results can be viewed directly on the page that was saved (under "Accessibility" tab.)  Only the most recent Tenon results are saved, as older results are no actionable.
+
+The call to tenon can be configured to be synchronous or asynchronous. Synchronous calls have the advantage that when the page has finished saving the results are already there. Asynchronous calls have the advantage that the save is faster, and the page will generally need to be reloaded.
+
+Note: this behaviour differs from earlier versions of the module, where requests to the front end of the site triggered requests to Tenon. This behaviour has been removed, as it gives content authors no ability to fix the reported issues before publishing.
+
+## To do
+
+ *  Determine how to reduce requests. Not every save requires a call to Tenon,
+    especially in multiple-save edits of large content.
+ *  Under some circumstances, there may be issues that Tenon reports
+    repeatedly, but which are deemed acceptible by the product owner. It would
+    be good to have a way to automatically exclude certain patterns.
+    Consideration needs to be given to the fact that this is not black and
+    white, in that the same error may be actionable in one circumstance but
+    not another.
+ *  Add a checkbox to the accessibility tab on each page that controls whether
+    that page is checked with Tenon or not. This would be useful in the case
+    of pages that are mostly composed of dynamically generated content (e.g.
+    search pages), where the results may not be meaningful.
+
 ##Authors
 **Josh Kosmala** josh@novaweb.co.nz
 Props to **Leigh Harrison** leigh@elseapps.com for her input on this module
